@@ -245,11 +245,11 @@ def detect_bruteforce(entries, threshold):
 
     suspicious = {}
     for ip, codes in counts.items():
-        total_401 = codes.get('401', 0) + codes.get('403', 0)
+        total_auth_errors = codes.get('401', 0) + codes.get('403', 0)
         total_404 = codes.get('404', 0)
-        if total_401 >= threshold or total_404 >= threshold:
+        if total_auth_errors >= threshold or total_404 >= threshold:
             suspicious[ip] = {
-                '401/403': total_401,
+                '401/403': total_auth_errors,
                 '404':     total_404,
             }
     return suspicious
