@@ -81,8 +81,11 @@ PATH_TRAVERSAL_PATTERNS = [
     # Wrappers PHP
     'php://filter', 'php://input', 'php://fd',
     'data://', 'file://', 'expect://',
-    # Inclusion distante
-    'http://', 'https://',   # dans un paramètre type ?page=
+    # Inclusion distante via paramètre applicatif (ex: ?page=http://attacker.com)
+    # NOTE: 'http://' et 'https://' en général sont absents — ils apparaissent
+    # dans chaque Referer et génèrent des milliers de faux positifs sur un vrai log.
+    '?page=http', '?file=http', '?include=http',
+    '?page=ftp', '?url=http', '?redirect=http',
 ]
 
 
