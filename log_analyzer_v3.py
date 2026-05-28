@@ -82,8 +82,9 @@ PATH_TRAVERSAL_PATTERNS = [
     'php://filter', 'php://input', 'php://fd',
     'data://', 'file://', 'expect://',
     # Inclusion distante via paramètre applicatif (ex: ?page=http://attacker.com)
-    # NOTE: 'http://' et 'https://' en général sont absents — ils apparaissent
-    # dans chaque Referer et génèrent des milliers de faux positifs sur un vrai log.
+    # NOTE: on ne cherche pas 'http://' ou 'https://' en général —
+    # ils apparaissent dans chaque referer et créeraient des milliers de faux positifs.
+    # On cible les patterns typiques d'inclusion de fichier distant.
     '?page=http', '?file=http', '?include=http',
     '?page=ftp', '?url=http', '?redirect=http',
 ]
