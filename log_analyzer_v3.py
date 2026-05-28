@@ -198,35 +198,37 @@ def _normalize(text):
     return decoded.lower()
 
 
-def _detect_generic(entries, patterns, attack_type):
-    """
-    Détecteur générique : cherche les patterns dans la requête normalisée.
-    Retourne une liste de dicts avec les clés supplémentaires
-    'matched_pattern' et 'attack_type'.
-    """
+def detect_xss(entries):
     hits = []
     for entry in entries:
-        normalized = _normalize(entry['request'])
-        for pattern in patterns:
-            if pattern in normalized:
-                hit = dict(entry)
-                hit['matched_pattern'] = pattern
-                hit['attack_type'] = attack_type
-                hits.append(hit)
-                break          # un seul hit par entrée
+        req = _normalize(entry['request'])
+        for pattern in XSS_PATTERNS:
+            if pattern in req:
+                hits.append({**entry, 'matched_pattern': pattern, 'attack_type': 'XSS'})
+                break
     return hits
 
 
-def detect_xss(entries):
-    return _detect_generic(entries, XSS_PATTERNS, 'XSS')
-
-
 def detect_sqli(entries):
-    return _detect_generic(entries, SQL_PATTERNS, 'SQLi')
+    hits = []
+    for entry in entries:
+        req = _normalize(entry['request'])
+        for pattern in SQL_PATTERNS:
+            if pattern in req:
+                hits.append({**entry, 'matched_pattern': pattern, 'attack_type': 'SQLi'})
+                break
+    return hits
 
 
 def detect_path_traversal(entries):
-    return _detect_generic(entries, PATH_TRAVERSAL_PATTERNS, 'PathTraversal')
+    hits = []
+    for entry in entries:
+        req = _normalize(entry['request'])
+        for pattern in PATH_TRAVERSAL_PATTERNS:
+            if pattern in req:
+                hits.append({**entry, 'matched_pattern': pattern, 'attack_type': 'PathTraversal'})
+                break
+    return hits
 
 
 def detect_bruteforce(entries, threshold):
