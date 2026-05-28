@@ -303,7 +303,9 @@ def generate_report(entries, xss_hits, sqli_hits, path_hits,
         for h in xss_hits:
             flag = " ⚠️ 200" if h['status_code'] == '200' else f" [{h['status_code']}]"
             lines.append(f"  {h['ip']}{flag}  pattern={h['matched_pattern']!r}")
-            lines.append(f"    → {h['request'][:100]}")
+            req = h['request']
+            display = req[:100] + ('…' if len(req) > 100 else '')
+            lines.append(f"    → {display}")
 
     # --- Détail SQLi ---
     if sqli_hits:
@@ -311,7 +313,9 @@ def generate_report(entries, xss_hits, sqli_hits, path_hits,
         for h in sqli_hits:
             flag = " ⚠️ 200" if h['status_code'] == '200' else f" [{h['status_code']}]"
             lines.append(f"  {h['ip']}{flag}  pattern={h['matched_pattern']!r}")
-            lines.append(f"    → {h['request'][:100]}")
+            req = h['request']
+            display = req[:100] + ('…' if len(req) > 100 else '')
+            lines.append(f"    → {display}")
 
     # --- Détail Path Traversal ---
     if path_hits:
@@ -319,7 +323,9 @@ def generate_report(entries, xss_hits, sqli_hits, path_hits,
         for h in path_hits:
             flag = " ⚠️ 200" if h['status_code'] == '200' else f" [{h['status_code']}]"
             lines.append(f"  {h['ip']}{flag}  pattern={h['matched_pattern']!r}")
-            lines.append(f"    → {h['request'][:100]}")
+            req = h['request']
+            display = req[:100] + ('…' if len(req) > 100 else '')
+            lines.append(f"    → {display}")
 
     # --- Brute-force / Scan ---
     if bf_ips:
