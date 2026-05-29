@@ -78,9 +78,11 @@ PATH_TRAVERSAL_PATTERNS = [
     '/proc/self/environ', '/proc/self/cmdline',
     # Fichiers système Windows cibles
     'win.ini', 'boot.ini', 'system32/drivers/etc/hosts',
-    # Wrappers PHP
+    # Wrappers PHP d'inclusion (LFI)
     'php://filter', 'php://input', 'php://fd',
-    'data://', 'file://', 'expect://',
+    'data://', 'file://',
+    # expect:// est un wrapper d'exécution (RCE), pas d'inclusion — retiré de cette catégorie
+    # Il serait plus pertinent dans un scanner de Command Injection
     # Inclusion distante via paramètre applicatif (ex: ?page=http://attacker.com)
     # NOTE: on ne cherche pas 'http://' ou 'https://' en général —
     # ils apparaissent dans chaque referer et créeraient des milliers de faux positifs.
