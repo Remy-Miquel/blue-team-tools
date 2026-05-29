@@ -117,7 +117,6 @@ def setup_cli():
     """Configure et retourne les arguments CLI."""
     parser = argparse.ArgumentParser(
         description="Analyseur de logs Apache — Blue Team Lab",
-        epilog="Exemple : python log_analyzer_v3.py access.log -o rapport.txt"
     )
     parser.add_argument("file",
                         help="Chemin vers le fichier de log à analyser")
