@@ -24,7 +24,7 @@ from urllib.parse import unquote
 
 
 # =========================================================
-#  PATTERN LISTS
+# PATTERN LISTS — XSS / SQLi / Path Traversal
 # =========================================================
 
 XSS_PATTERNS = [
@@ -92,9 +92,7 @@ PATH_TRAVERSAL_PATTERNS = [
 ]
 
 
-# =========================================================
-#  PARSING REGEX (format Combined Apache / Nginx)
-# =========================================================
+# -- Regex de parsing (format Combined Log Apache/Nginx) --
 
 #  IP  ident  user  [timestamp]  "request"  status  size  "referer"  "user-agent"
 _LOG_RE = re.compile(
@@ -109,9 +107,7 @@ _LOG_RE = re.compile(
 )
 
 
-# =========================================================
-#  CLI
-# =========================================================
+# CLI / arguments
 
 def setup_cli():
     # Arguments CLI — retourne le namespace argparse.
@@ -130,9 +126,7 @@ def setup_cli():
     return parser.parse_args()
 
 
-# =========================================================
-#  I/O
-# =========================================================
+# --- Lecture fichier ---
 
 def read_log_file(file_path):
     # Générateur — évite de charger tout le fichier en RAM.
@@ -151,9 +145,7 @@ def read_log_file(file_path):
         sys.exit(1)
 
 
-# =========================================================
-#  PARSING
-# =========================================================
+# Parsing ligne par ligne
 
 def parse_log_line(line):
     """
@@ -179,9 +171,7 @@ def parse_log_line(line):
     }
 
 
-# =========================================================
-#  ATTACK DETECTION  (avec décodage URL systématique)
-# =========================================================
+# Détection des attaques (double-décodage URL avant comparaison)
 
 def _normalize(text):
     # Double-décodage URL + lowercase — couvre la plupart des évasions par encodage.
@@ -250,7 +240,7 @@ def detect_bruteforce(entries, threshold):
 
 
 # =========================================================
-#  RAPPORT
+# RAPPORT + ORCHESTRATION
 # =========================================================
 
 def _section(title):
@@ -342,9 +332,6 @@ def generate_report(entries, xss_hits, sqli_hits, path_hits,
             print(f"[!] Impossible d'écrire le rapport : {exc}", file=sys.stderr)
 
 
-# =========================================================
-#  ORCHESTRATION
-# =========================================================
 
 def main():
     """Orchestre le workflow complet d'analyse."""
