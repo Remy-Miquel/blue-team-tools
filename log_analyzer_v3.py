@@ -114,7 +114,7 @@ _LOG_RE = re.compile(
 # =========================================================
 
 def setup_cli():
-    """Configure et retourne les arguments CLI."""
+    # Arguments CLI — retourne le namespace argparse.
     parser = argparse.ArgumentParser(
         description="Analyseur de logs Apache — Blue Team Lab",
     )
@@ -135,11 +135,7 @@ def setup_cli():
 # =========================================================
 
 def read_log_file(file_path):
-    """
-    Lit le fichier de log ligne par ligne (générateur).
-    Gère les erreurs d'accès et les problèmes d'encodage.
-    Utilise un générateur pour ne pas charger tout le fichier en RAM.
-    """
+    # Générateur — évite de charger tout le fichier en RAM.
     try:
         with open(file_path, 'r', encoding='utf-8', errors='replace') as f:
             for line in f:
@@ -188,10 +184,7 @@ def parse_log_line(line):
 # =========================================================
 
 def _normalize(text):
-    """
-    Double-décode l'URL et met en minuscules.
-    Couvre la plupart des tentatives d'évasion par encodage.
-    """
+    # Double-décodage URL + lowercase — couvre la plupart des évasions par encodage.
     try:
         decoded = unquote(unquote(text))  # double-décodage
     except Exception:
